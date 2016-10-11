@@ -2,7 +2,9 @@
 require_once __DIR__.'/../config.php';
 // DATA STORE
 class FB_model extends aConfig{
-
+    public $app_secret = "850a555729d096d2660ff1cb3340514f";
+    public $app_id = "1241254219271435";
+    
     public function __construct() {
     }
 }
@@ -30,7 +32,7 @@ $view = new FB_view($model);
 
 echo $view->Render();
 
-
+/*
 class User_Authentication
 {
     public $app_id = "";
@@ -61,8 +63,9 @@ class User_Authentication
     }
 
 }
+*/
 //var_dump(User_Authentication::Instance()->getFB());
-
+/*
 require_once __DIR__ . '/logout.php';
 
 if (!session_id()) {
@@ -97,4 +100,4 @@ if(!isset($_SESSION['fb_access_token'])){
         exit;
     }
 }
-
+*/
