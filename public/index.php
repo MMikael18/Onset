@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__.'/../core/debugTools.php';
+require_once __DIR__.'/../core/mvcCore.php';
 //include_once("config.php");
 //include_once("includes/functions.php");
 require_once __DIR__ .'/../vendor/autoload.php';

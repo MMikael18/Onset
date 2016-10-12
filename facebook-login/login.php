@@ -3,7 +3,7 @@ if (!session_id()) {
     session_start();
 }
 // DATA STORE
-class FB_model{
+class FB_model extends aModelCore{
     
     public $app_secret = NULL;
     public $app_id = NULL;
@@ -18,14 +18,13 @@ class FB_model{
         $this->app_secret = $config['app_secret'];
         $this->app_id = $config['app_id'];
         $this->absolute_url = $config['absolute_url'];
-
         $this->logoutUrl = $config['absolute_url'].'/?fblogout';
     }
-
 }
+
 // USER INPUT
-class FB_controll{
-    private $model;
+class FB_controll extends aControllCore{
+    
     private $helper;
     private $fb;
     private $fbaccesstoken = "fb_access_token";
@@ -37,6 +36,7 @@ class FB_controll{
             'app_secret' => $model->app_secret,
             'default_graph_version' => 'v2.2'
         ]);
+        
         $this->helper = $this->fb->getRedirectLoginHelper();
         $permissions = ['email'];
 
@@ -49,11 +49,10 @@ class FB_controll{
         $this->model->is_loged = false;
         if(isset($_SESSION[$this->fbaccesstoken])){
             $this->model->is_loged = true;
+            $this->setData($_SESSION[$this->fbaccesstoken]);
         }
-        
         $loginUrl = $this->helper->getLoginUrl($this->model->absolute_url.'/?fblogin', $permissions);
         $this->model->loginUrl = htmlspecialchars($loginUrl);
-
     }
 
     private function Logout(){
@@ -89,20 +88,17 @@ class FB_controll{
             exit;
         }
         // Logged in
-        echo '<h3>Access Token</h3>';
-        var_dump($accessToken->getValue());
+        //var_dump($accessToken->getValue());
         // The OAuth 2.0 client handler helps us manage access tokens
         $oAuth2Client = $this->fb->getOAuth2Client();
         // Get the access token metadata from /debug_token
         $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-        echo '<h3>Metadata</h3>';
-        var_dump($tokenMetadata);
+        //Debug::dump($tokenMetadata);
         // Validation (these will throw FacebookSDKException's when they fail)
         $tokenMetadata->validateAppId($this->model->app_id); // Replace {app-id} with your app id
         // If you know the user ID this access token belongs to, you can validate it here
         //$tokenMetadata->validateUserId('123');
         $tokenMetadata->validateExpiration();
-
         if (! $accessToken->isLongLived()) {// Exchanges a short-lived access token for a long-lived one
             try {
                 $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
@@ -112,12 +108,27 @@ class FB_controll{
             }
         }
         $_SESSION[$this->fbaccesstoken] = (string) $accessToken;
+        header("Location:../");
     }
 
+    private function setData($access_token){
+        try {
+            // Returns a `Facebook\FacebookResponse` object
+            $response = $this->fb->get('/me?fields=id,name,picture', $access_token);
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+        $user = $response->getGraphUser();
+        //Debug::dump($user);
+        echo '<img src="'. $user['picture']['url'].'" />';
+    }
 }
 // HTML OUT
-class Login_view{
-    private $model;
+class Login_view extends aViewCore{
     public function __construct(FB_model $model) {
         $this->model = $model;
     }
@@ -128,9 +139,10 @@ class Login_view{
         }else{
             echo '<a href="'.$this->model->loginUrl.'">'.$this->model->login_text.'</a>';
         }
-        echo     '</div>';
+        echo '</div>';
     }   
 }
+
 /*
 class User_Authentication
 {
