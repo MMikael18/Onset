@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__.'/../core/debugTools.php';
 require_once __DIR__.'/../core/mvcCore.php';
 require_once __DIR__.'/../core/router.php';
@@ -7,7 +6,6 @@ require_once __DIR__.'/../core/router.php';
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__."/../facebook-login/login.php";
 require_once __DIR__.'/../config.php';
-
 ?>
 <html>
 <head>
@@ -17,9 +15,7 @@ require_once __DIR__.'/../config.php';
 </head>
 <body>
 
-<a href="/">index</a>
-<a href="/user.php">user</a>
-
+<a href="/">index</a><a href="/user.php">user</a>
 <?php
 
 $model = new FB_model(Config::FB());
