@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__.'/../core/debugTools.php';
 require_once __DIR__.'/../core/mvcCore.php';
 require_once __DIR__.'/../core/router.php';
