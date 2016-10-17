@@ -1,7 +1,5 @@
 <?php
-if (!session_id()) {
-    session_start();
-}
+
 // DATA STORE
 class FB_model extends aModelCore{
 
@@ -26,11 +24,14 @@ class FB_model extends aModelCore{
     public $userImage; 
 
     public function __construct($config) {
+        if (!session_id()) {
+            session_start();
+        }
         // Fb settings
-        $this->app_secret = $config['app_secret'];
-        $this->app_id = $config['app_id'];
-        $this->absolute_url = $config['absolute_url'];
-        $this->logoutUrl = $config['absolute_url'].'/?fblogout';
+        $this->app_secret = $config['FB']['app_secret'];
+        $this->app_id = $config['FB']['app_id'];
+        $this->absolute_url = ABSOLUTE_URL;
+        $this->logoutUrl = ABSOLUTE_URL.'/?fblogout';
 
         $this->InitalFacebook();
     }
@@ -127,38 +128,4 @@ class FB_model extends aModelCore{
         $this->userName = $user['name'];
         $this->userImage = $user['picture']['url'];   
     }
-}
-
-// USER INPUT
-class FB_controll extends aControllCore{
-    
-    private $helper;
-    private $fb;
-    private $fbaccesstoken = "fb_access_token";
-
-    public function __construct(FB_model $model) {
-        $this->model = $model;
-        if (array_key_exists('fblogin',$_GET)){
-            $this->model->loginCallBack();
-        }else if(array_key_exists('fblogout',$_GET)){
-            $this->model->Logout();
-        }
-    }
-}
-// HTML OUT
-class Login_view extends aViewCore{
-    public function __construct(FB_model $model) {
-        $this->model = $model;
-    }
-    public function Render() {
-        echo '<div>';
-        if($this->model->is_loged){
-            echo '<img src="'.$this->model->userImage.'" />';
-            echo '<span>'.$this->model->userName.'</span><br />';
-            echo '<a href="'.$this->model->logoutUrl.'">'.$this->model->logout_text.'</a>';
-        }else{
-            echo '<a href="'.$this->model->loginUrl.'">'.$this->model->login_text.'</a>';
-        }
-        echo '</div>';
-    }   
 }
