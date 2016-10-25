@@ -1,19 +1,20 @@
 <?php
 
 // VIEW OUT
-class Login_view extends aViewCore{
-    public function __construct(FB_model $model) {
+class Login_view extends aView{
+    public function __construct(aModel $model) {
         $this->model = $model;
     }
     public function Render() {
-        echo '<div>';
+        $data = '<div>';
         if($this->model->is_loged){
-            echo '<img src="'.$this->model->userImage.'" />';
-            echo '<span>'.$this->model->userName.'</span><br />';
-            echo '<a href="'.$this->model->logoutUrl.'">'.$this->model->logout_text.'</a>';
+            $data .= '<img src="'.$this->model->userImage.'" />';
+            $data .= '<span>'.$this->model->userName.'</span><br />';
+            $data .= '<a href="'.$this->model->logoutUrl.'">'.$this->model->logout_text.'</a>';
         }else{
-            echo '<a href="'.$this->model->loginUrl.'">'.$this->model->login_text.'</a>';
+            $data .= '<a href="'.$this->model->loginUrl.'">'.$this->model->login_text.'</a>';
         }
-        echo '</div>';
+        $data .= '</div>';
+        return $data;
     }   
 }

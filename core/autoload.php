@@ -6,8 +6,8 @@ spl_autoload_register(function ($class_name)
     $directorys = array(
         '../core/',
         '../core/mvc/',
-        '../app/controll/',
         '../app/model/',
+        '../app/controll/',
         '../app/view/'
     );
     //for each directory
