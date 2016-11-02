@@ -3,20 +3,25 @@
 spl_autoload_register(function ($class_name) 
 {
     //class directories
+    
+    $dir = '../';
     $directorys = array(
-        '../core/',
-        '../core/mvc/',
-        '../app/model/',
-        '../app/controll/',
-        '../app/view/'
+        'core/',
+        'core/mvc/',
+        'app/page/model/',
+        'app/page/controll/',
+        'app/page/view/',
+        'app/userControll/'
     );
+    
     //for each directory
     foreach($directorys as $directory)
-    {            
-        if(file_exists($directory.$class_name . '.php'))//see if the file exsists
+    {       
+            
+        //$className = str_replace("/", "\\", $className);
+        if(file_exists($dir.$directory.$class_name . '.php'))//see if the file exsists
         {
-            require_once($directory.$class_name . '.php'); 
-            return;
+            require_once($dir.$directory.$class_name . '.php'); 
         }            
     }
 });

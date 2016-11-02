@@ -3,7 +3,7 @@ require_once __DIR__.'/../config.php';
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../core/autoload.php';
 
-$app = new AppControll();
+$app = new App();
 
 /*
 $profile = new Template("../app/view/tpl/login.html");
