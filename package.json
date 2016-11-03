@@ -1,0 +1,30 @@
+{
+  "name": "onset",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MMikael18/Onset/"
+  },
+  "author": "Matti Uusitalo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MMikael18/Onset/issues"
+  },
+  "dependencies": {
+    "react": "~15.3.1",
+    "react-dom": "~15.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "~6.14.0",
+    "babel-loader": "~6.2.5",
+    "babel-cli": "~6.14.0",
+    "babel-preset-react": "~6.11.1",
+    "babel-preset-es2015": "~6.14.0",
+    "webpack": "~1.13.2"
+  },
+  "description": ""
+}
