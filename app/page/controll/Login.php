@@ -3,11 +3,7 @@
 // USER INPUT
 class Login extends aControll{
 
-    function start (){
-        if (!session_id()) {
-            session_start();
-        }  
-    }
+    function start (){}
 
     public function index($p) {
         if (isset($_SESSION['user_id'])) {

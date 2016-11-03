@@ -1,7 +1,5 @@
 <?php
-
 class App{
-
     private $controller;
     public function __construct() {
         // Get route

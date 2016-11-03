@@ -11,7 +11,9 @@ spl_autoload_register(function ($class_name)
         'app/page/model/',
         'app/page/controll/',
         'app/page/view/',
-        'app/userControll/'
+        'app/user/model/',
+        'app/user/controll/',
+        'app/user/view/'
     );
     
     //for each directory

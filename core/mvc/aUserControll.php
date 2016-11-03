@@ -33,13 +33,13 @@ abstract class aUserControll{
 
     protected function render($view = "") {
         // set view file path
-        $file = "../app/page/view/".$view.".php";
+        $file = "../app/user/view/".$view.".php";
         if(strlen($view) == 0){
-            $file = "../app/page/view/".$this->name."View.php";
+            $file = "../app/user/view/".$this->name."View.php";
         }
         // look id view exists
         if(!file_exists($file)){
-            trigger_error("aControll failed to find view ".$file, E_USER_NOTICE);
+            trigger_error("aUserControll failed to find view ".$file, E_USER_NOTICE);
             return;
         }
         // set view

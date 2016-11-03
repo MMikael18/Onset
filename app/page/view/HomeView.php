@@ -1,12 +1,7 @@
-<?php require_once __DIR__.'/includes/head.php'; ?>
-<header>
-    <div class="row">
-        <div class="col-sm-6 offset-md-3">
-            <a href="/login/LoginOut">Log out</a>
-            <?php App::UserControll("header/action/id"); ?>
-        </div>
-    </div>        
-</header>
+<?php 
+require_once APP.'/includes/head.php'; 
+require_once  APP.'/includes/header.php'; 
+?>
 <article>
     <div class="container-fluid">
     
@@ -17,7 +12,4 @@
     </div>
     
 </article>
-<footer>
-    <?php App::UserControll("jaska"); ?>
-</footer>
-<?php require_once __DIR__.'/includes/footer.php'; ?>
+<?php require_once  APP.'/includes/footer.php'; ?>

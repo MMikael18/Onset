@@ -1,14 +1,15 @@
-body{
-    
+body{}
+/* Header Login */
+.hd-login{
+    display: flex;
 }
-ul{
-    li{
-        color: red;
-    }
+.hd-login > span{
+    line-height: 1em;
+    padding-top: 5px;
+    padding-right: 15px;
 }
-
 /* Login */
 .login-box{
     width: 450px;
     margin: 0 auto;
-}
+} 

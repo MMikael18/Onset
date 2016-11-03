@@ -1,5 +1,6 @@
 <?php 
-    require_once __DIR__.'/includes/head.php';
+require_once APP.'/includes/head.php'; 
+require_once  APP.'/includes/header.php'; 
 ?>
 <header>        
 </header>
@@ -17,8 +18,4 @@
         Create a Onset account. <a href="/Login/startSingUp">Sing up now!</a>
     </div>
 </article>
-<footer>
-</footer>
-<?php 
-    require_once __DIR__.'/includes/footer.php';
-?>
+<?php require_once  APP.'/includes/footer.php'; ?>

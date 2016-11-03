@@ -8,6 +8,9 @@ class View{
     }
 
     public function get($v){
-        return $this->values[$v];
+        if(isset($this->values[$v])){
+            return $this->values[$v];
+        }
+        return false;       
     }
 }

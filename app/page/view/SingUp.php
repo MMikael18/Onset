@@ -1,8 +1,7 @@
 <?php 
-    require_once __DIR__.'/includes/head.php';
+require_once APP.'/includes/head.php'; 
+require_once  APP.'/includes/header.php'; 
 ?>
-<header>        
-</header>
 <article>
     <div class="login-box">
         <form action="/Login/<?php echo $view->get('action'); ?>" method="post">
@@ -148,8 +147,4 @@
         </script>
     </div>
 </article>
-<footer>
-</footer>
-<?php 
-    require_once __DIR__.'/includes/footer.php';
-?>
+<?php require_once  APP.'/includes/footer.php'; ?>

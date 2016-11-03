@@ -3,20 +3,14 @@
 // USER INPUT
 class Home extends aControll{
 
-    function start (){
-        if (!session_id()) {
-            session_start();
-        }
-    }
+    function start (){}
 
     public function index($p) {
-       
-        if (isset($_SESSION['user_id'])) {            
+        if (isset($_SESSION['USER'])) {            
            $this->render();
         }else{
             header("Location:../login");
-        }
-        
+        }   
     }
 
 }

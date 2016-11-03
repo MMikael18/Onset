@@ -36,8 +36,11 @@ class LoginModel {
                 if (!session_id()) {
                     session_start();
                 }
-                $_SESSION['user_id'] = $row->user_id;
-                $_SESSION['user_email'] = $row->email;
+                $_SESSION['USER'] = [
+                    "id"=>$row->user_id,
+                    "email"=>$row->email
+                    ];
+                //$_SESSION['user_email'] = $row->email;
                 
             } else {
                 echo 'Invalid password.';
