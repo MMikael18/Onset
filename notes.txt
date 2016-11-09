@@ -5,3 +5,5 @@ npm install webpack -g
 ln -s /usr/bin/nodejs /usr/bin/node
 
 node_modules/.bin/babel ./app/react/app.js -w --out-file ./public/app.js
+
+webpack -w

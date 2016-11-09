@@ -1,4 +1,8 @@
-body{}
+body{
+    article{
+        padding-top: 15px;
+    }
+}
 /* Header Login */
 .hd-login{
     display: flex;
@@ -12,4 +16,4 @@ body{}
 .login-box{
     width: 450px;
     margin: 0 auto;
-} 
+}  

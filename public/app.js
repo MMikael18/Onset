@@ -54,21 +54,78 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	__webpack_require__(172);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Main = _react2.default.createClass({
-	  displayName: 'Main',
+	var LinkRow = _react2.default.createClass({
+	  displayName: 'LinkRow',
 
 	  render: function render() {
 	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      'React'
+	      'li',
+	      { className: 'list-group-item' },
+	      _react2.default.createElement(
+	        'a',
+	        { href: this.props.data.url },
+	        this.props.data.title
+	      )
 	    );
 	  }
 	});
 
-	_reactDom2.default.render(_react2.default.createElement(Main, null), document.getElementById('app'));
+	var Collapsible = _react2.default.createClass({
+	  displayName: 'Collapsible',
+
+	  render: function render() {
+
+	    var rows = [];
+	    var num = 0;
+	    this.props.data.forEach(function (c) {
+	      rows.push(_react2.default.createElement(LinkRow, { key: c.id, data: c }));
+	    });
+
+	    return _react2.default.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      rows
+	    );
+	  }
+	});
+
+	var App = _react2.default.createClass({
+	  displayName: 'App',
+
+	  getInitialState: function getInitialState() {
+	    return { data: [] };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    $.ajax({
+	      url: "/_api",
+	      dataType: 'json',
+	      cache: false,
+	      success: function (data) {
+	        console.dir(data);
+	        this.setState({ data: data });
+	      }.bind(this),
+	      error: function (xhr, status, err) {
+	        console.error("error", status, err.toString());
+	      }.bind(this)
+	    });
+	  },
+	  hadleOnChange: function hadleOnChange(d) {
+	    this.setState({ data: d });
+	  },
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(Collapsible, { data: this.state.data })
+	    );
+	  }
+	});
+
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
@@ -21436,6 +21493,12 @@
 
 	module.exports = ReactDOMNullInputValuePropHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 172 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

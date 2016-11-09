@@ -5,13 +5,12 @@ class App{
         // Get route
         $router = new Router();
         $route = $router->getRoute();
-    
+
         if($route[0] == ''){
             $this->controll = new Controll('Home');
         }else
-        if($route[0] == "_api"){
-            //$r =  new Rest();
-            //echo $r->response();
+        if($route[0] == "Api"){
+            $this->controll = new RestControll($route);
         }else{            
             $this->controll = new Controll($route[0],$route[1],$route[2]);            
         }
@@ -20,6 +19,22 @@ class App{
     public static function UserControll($controll){
         $route = Router::stringToRoute($controll);
         $usercontroll = new UserControll($route[0],$route[1],$route[2]);
+    }
+}
+
+class RestControll{
+    public function __construct($controll,$action = "",$id = ""){
+        
+        // headers for not caching the results
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        // headers to tell that result is JSON
+        header('Content-type: application/json');
+
+        $link1 = array('id' => '1', 'title' => 'Google' , 'url' => 'https://www.google.fi');
+        $link2 = array('id' => '2', 'title' => 'JPPSoft Oy', 'url' => 'https://www.jppsoft.fi');
+        $result_json = array($link1,$link2);
+        echo json_encode($result_json);
     }
 }
 
@@ -75,48 +90,3 @@ class UserControll{
         return $controller;
     }
 }
-
-/*
-// set master
-$master = new Template("../app/view/layout/master.html");
-$master->set("login", "login");
-$master->set("main", "main");
-echo $master->output();
-*/
-
-//Debug::dump($routes);
-//$ole = $this->CallAPI("PUT","http://onset.dev/_api");
-
-//$master = new Template("../app/view/layout/master.html");
-//$master->set("login", $ole);
-//$master->set("main", "main");
-//echo $master->output();
-
-/*/
-    private function CallAPI($method, $url, $data = false)
-    {
-        $curl = curl_init();
-        switch ($method)
-        {
-            case "POST":
-                curl_setopt($curl, CURLOPT_POST, 1);
-                if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                break;
-            case "PUT":
-                curl_setopt($curl, CURLOPT_PUT, 1);
-                break;
-            default:
-                if ($data)
-                    $url = sprintf("%s?%s", $url, http_build_query($data));
-        }
-        // Optional Authentication:
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, "username:password");
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($curl);
-        curl_close($curl);
-        return $result;
-    }
-*/
