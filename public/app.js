@@ -46,6 +46,8 @@
 
 	'use strict';
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -58,73 +60,186 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var LinkRow = _react2.default.createClass({
-	  displayName: 'LinkRow',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'li',
-	      { className: 'list-group-item' },
-	      _react2.default.createElement(
-	        'a',
-	        { href: this.props.data.url },
-	        this.props.data.title
-	      )
-	    );
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddLinkInput = function (_React$Component) {
+	  _inherits(AddLinkInput, _React$Component);
+
+	  function AddLinkInput(props) {
+	    _classCallCheck(this, AddLinkInput);
+
+	    var _this = _possibleConstructorReturn(this, (AddLinkInput.__proto__ || Object.getPrototypeOf(AddLinkInput)).call(this, props));
+
+	    _this.state = { value: '' };
+	    //this.handleChange = this.handleChange.bind(this);
+	    return _this;
 	  }
-	});
 
-	var Collapsible = _react2.default.createClass({
-	  displayName: 'Collapsible',
+	  _createClass(AddLinkInput, [{
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      this.setState({ value: event.target.value });
+	      this.props.onUrlChange(this.refs.filterTextInput.value);
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      alert('A name was submitted: ' + this.state.value);
+	      event.preventDefault();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
 
-	  render: function render() {
+	      return _react2.default.createElement(
+	        'form',
+	        { onSubmit: function onSubmit(e) {
+	            return _this2.handleSubmit(e);
+	          } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement('input', {
+	            type: 'text', className: 'form-control',
+	            placeholder: 'add url',
+	            ref: 'filterTextInput',
+	            value: this.state.value,
+	            onChange: function onChange(e) {
+	              return _this2.handleChange(e);
+	            } })
+	        )
+	      );
+	    }
+	  }]);
 
-	    var rows = [];
-	    var num = 0;
-	    this.props.data.forEach(function (c) {
-	      rows.push(_react2.default.createElement(LinkRow, { key: c.id, data: c }));
-	    });
+	  return AddLinkInput;
+	}(_react2.default.Component);
 
-	    return _react2.default.createElement(
-	      'ul',
-	      { className: 'list-group' },
-	      rows
-	    );
+	;
+
+	/* ----------------------------------------------------------------------- */
+
+	var LinkRow = function (_React$Component2) {
+	  _inherits(LinkRow, _React$Component2);
+
+	  function LinkRow() {
+	    _classCallCheck(this, LinkRow);
+
+	    return _possibleConstructorReturn(this, (LinkRow.__proto__ || Object.getPrototypeOf(LinkRow)).apply(this, arguments));
 	  }
-	});
 
-	var App = _react2.default.createClass({
-	  displayName: 'App',
+	  _createClass(LinkRow, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        { className: 'list-group-item' },
+	        _react2.default.createElement(
+	          'a',
+	          { href: this.props.data.url },
+	          this.props.data.title
+	        )
+	      );
+	    }
+	  }]);
 
-	  getInitialState: function getInitialState() {
-	    return { data: [] };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    $.ajax({
-	      url: "/_api",
-	      dataType: 'json',
-	      cache: false,
-	      success: function (data) {
-	        console.dir(data);
-	        this.setState({ data: data });
-	      }.bind(this),
-	      error: function (xhr, status, err) {
-	        console.error("error", status, err.toString());
-	      }.bind(this)
-	    });
-	  },
-	  hadleOnChange: function hadleOnChange(d) {
-	    this.setState({ data: d });
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(Collapsible, { data: this.state.data })
-	    );
+	  return LinkRow;
+	}(_react2.default.Component);
+
+	;
+
+	var List = function (_React$Component3) {
+	  _inherits(List, _React$Component3);
+
+	  function List() {
+	    _classCallCheck(this, List);
+
+	    return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).apply(this, arguments));
 	  }
-	});
 
+	  _createClass(List, [{
+	    key: 'render',
+	    value: function render() {
+	      var rows = [];
+	      this.props.data.forEach(function (c) {
+	        rows.push(_react2.default.createElement(LinkRow, { key: c.id, data: c }));
+	      });
+
+	      return _react2.default.createElement(
+	        'ul',
+	        { className: 'list-group' },
+	        rows
+	      );
+	    }
+	  }]);
+
+	  return List;
+	}(_react2.default.Component);
+
+	;
+
+	/* ----------------------------------------------------------------------- */
+
+	var App = function (_React$Component4) {
+	  _inherits(App, _React$Component4);
+
+	  function App(props) {
+	    _classCallCheck(this, App);
+
+	    var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	    _this5.state = { data: [] };
+	    _this5.onUrlInput = _this5.onUrlInput.bind(_this5);
+	    return _this5;
+	  }
+
+	  _createClass(App, [{
+	    key: 'onUrlInput',
+	    value: function onUrlInput(value) {
+	      console.log(value);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      $.ajax({
+	        url: "/_api",
+	        dataType: 'json',
+	        cache: false,
+	        success: function (d) {
+	          this.setState({ data: d });
+	        }.bind(this),
+	        error: function (xhr, status, err) {
+	          console.error("error", status, err.toString());
+	        }.bind(this)
+	      });
+	    }
+
+	    //componentDidMount
+	    //componentWillMount
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(AddLinkInput, { onUrlChange: this.onUrlInput }),
+	        _react2.default.createElement(List, { data: this.state.data })
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(_react2.default.Component);
+
+	;
+
+	//  <List date={this.state.date} />
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
 /***/ },

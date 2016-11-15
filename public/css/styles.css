@@ -1,5 +1,6 @@
 body article {
-  padding-top: 15px; }
+  padding-top: 15px;
+  padding-bottom: 15px; }
 
 /* Header Login */
 .hd-login {
