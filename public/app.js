@@ -64,7 +64,18 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <div  className="form-control url-input"  
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               onInput = {e  => this.handleChange(e)} 
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               onBlur  = {e  => this.handleChange(e)}
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               onKeyUp={e  => this.handleChange(e)}
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ref="urlinput"
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               id="editable"
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               dangerouslySetInnerHTML = {{__html: this.state.html}}
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               contentEditable="true">
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </div>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
 
 	var AddLinkInput = function (_React$Component) {
 	  _inherits(AddLinkInput, _React$Component);
@@ -74,45 +85,89 @@
 
 	    var _this = _possibleConstructorReturn(this, (AddLinkInput.__proto__ || Object.getPrototypeOf(AddLinkInput)).call(this, props));
 
-	    _this.state = { value: '' };
+	    _this.state = {
+	      url: 'url',
+	      title: 'title',
+	      description: 'description',
+	      tags: 'tags'
+	    };
 	    //this.handleChange = this.handleChange.bind(this);
 	    return _this;
 	  }
 
 	  _createClass(AddLinkInput, [{
-	    key: 'handleChange',
-	    value: function handleChange(event) {
-	      this.setState({ value: event.target.value });
-	      this.props.onUrlChange(this.refs.filterTextInput.value);
+	    key: 'handleChangeEdit',
+	    value: function handleChangeEdit(e) {
+
+	      var editableDiv = document.getElementById('editable');
+
+	      var caretPos = 0,
+	          line = 0,
+	          sel,
+	          range;
+	      sel = window.getSelection();
+	      range = sel.getRangeAt(0);
+	      if (range.commonAncestorContainer.parentNode == editableDiv) {
+	        caretPos = range.endOffset;
+	        line = range.commonAncestorContainer.parentNode;
+	      }
+
+	      if (e.keyCode === 0 || e.keyCode === 32) {
+	        e.preventDefault();
+	        //console.log('Space pressed')
+
+	        var html = this.refs.urlinput.innerHTML;
+	        var urlRegex = /(^|\s)(https?:\/\/[^\s]+)(^|\s)/g;
+	        if (urlRegex.test(html)) {
+	          this.refs.urlinput.innerHTML = html.replace(urlRegex, function (url) {
+	            return ' <a href="' + url.trim() + '">' + url.trim() + '</a> ';
+	          });
+
+	          if (line) {
+	            range = range.cloneRange();
+	            range.setStartAfter(line, 1);
+	            range.collapse(true);
+	            sel.removeAllRanges();
+	            sel.addRange(range);
+	          }
+	        }
+	      }
+
+	      //this.setState({html: html});
+	      /*
+	      this.props.onUrlChange(
+	        this.refs.filterTextInput.value
+	      );
+	      */
 	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(event) {}
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
-	      alert('A name was submitted: ' + this.state.value);
+	      alert('A name was submitted: ');
 	      event.preventDefault();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
 	      return _react2.default.createElement(
-	        'form',
-	        { onSubmit: function onSubmit(e) {
-	            return _this2.handleSubmit(e);
-	          } },
+	        'div',
+	        null,
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'form-group' },
+	          'form',
+	          { id: 'AddLinkInput', className: 'form-group', onSubmit: this.handleSubmit },
 	          _react2.default.createElement('input', {
-	            type: 'text', className: 'form-control',
-	            placeholder: 'add url',
+	            className: 'form-control url-input',
+	            type: 'text',
+	            placeholder: 'url',
+	            value: this.props.filterText,
 	            ref: 'filterTextInput',
-	            value: this.state.value,
-	            onChange: function onChange(e) {
-	              return _this2.handleChange(e);
-	            } })
-	        )
+	            onChange: this.handleChange
+	          })
+	        ),
+	        this.state.url
 	      );
 	    }
 	  }]);
@@ -191,11 +246,11 @@
 	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-	    _this5.state = { data: [] };
-	    _this5.onUrlInput = _this5.onUrlInput.bind(_this5);
-	    return _this5;
+	    _this4.state = { data: [] };
+	    _this4.onUrlInput = _this4.onUrlInput.bind(_this4);
+	    return _this4;
 	  }
 
 	  _createClass(App, [{
@@ -207,10 +262,11 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      $.ajax({
-	        url: "/_api",
+	        url: "/_api/links//5",
 	        dataType: 'json',
 	        cache: false,
 	        success: function (d) {
+	          console.dir(d);
 	          this.setState({ data: d });
 	        }.bind(this),
 	        error: function (xhr, status, err) {
@@ -218,10 +274,6 @@
 	        }.bind(this)
 	      });
 	    }
-
-	    //componentDidMount
-	    //componentWillMount
-
 	  }, {
 	    key: 'render',
 	    value: function render() {

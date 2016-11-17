@@ -1,3 +1,14 @@
+/*
+<div  className="form-control url-input"  
+onInput = {e  => this.handleChange(e)} 
+onBlur  = {e  => this.handleChange(e)}
+onKeyUp={e  => this.handleChange(e)}
+ref="urlinput"
+id="editable"
+dangerouslySetInnerHTML = {{__html: this.state.html}}
+contentEditable="true">
+</div>
+*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../sass/styles.scss';
@@ -5,33 +16,83 @@ import '../sass/styles.scss';
 class AddLinkInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+        url: 'url',
+        title: 'title',
+        description: 'description',
+        tags: 'tags'
+    };
     //this.handleChange = this.handleChange.bind(this);
-  } 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  }
+   
+
+  handleChangeEdit(e) {
+
+    var editableDiv = document.getElementById('editable'); 
+
+    var caretPos = 0,
+        line = 0,
+    sel, range;
+    sel = window.getSelection();
+    range = sel.getRangeAt(0);
+    if (range.commonAncestorContainer.parentNode == editableDiv) {
+        caretPos = range.endOffset;
+        line = range.commonAncestorContainer.parentNode;
+    }
+
+    if (e.keyCode === 0 || e.keyCode === 32) {
+      e.preventDefault()
+      //console.log('Space pressed')
+
+      var html = this.refs.urlinput.innerHTML;
+      var urlRegex = /(^|\s)(https?:\/\/[^\s]+)(^|\s)/g;
+      if(urlRegex.test(html)){
+        this.refs.urlinput.innerHTML = html.replace(urlRegex, function(url) {
+            return ' <a href="' + url.trim() + '">' + url.trim() + '</a> ';
+        })
+        
+        if (line) {
+            range = range.cloneRange();
+            range.setStartAfter(line,1);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+      }
+    }
+
+    //this.setState({html: html});
+    /*
     this.props.onUrlChange(
       this.refs.filterTextInput.value
     );
+    */
+  }
+
+  handleChange(event){
+
   }
   
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    alert('A name was submitted: ');
     event.preventDefault();
   }
 
   render (){
     return(
-      <form onSubmit={e => this.handleSubmit(e)}> 
-        <div className="form-group">
-          <input 
-            type="text" className="form-control"
-            placeholder="add url"
-            ref="filterTextInput"
-            value={this.state.value}
-            onChange={e  => this.handleChange(e)} />
-        </div>
-      </form>
+      <div>
+        <form id="AddLinkInput" className="form-group" onSubmit={this.handleSubmit}>
+          <input
+              className="form-control url-input" 
+              type="text"
+              placeholder="url"
+              value={this.props.filterText}
+              ref="filterTextInput"
+              onChange={this.handleChange}
+            />
+        </form>
+        {this.state.url}
+      </div>
     );
   }
 };
@@ -79,10 +140,11 @@ class App extends React.Component{
 
   componentDidMount() {
       $.ajax({
-        url: "/_api",
+        url: "/_api/links//5",
         dataType: 'json',
         cache: false,
         success: function(d) {
+          console.dir(d);
           this.setState({data: d});
         }.bind(this),
         error: function(xhr, status, err) {
@@ -90,10 +152,6 @@ class App extends React.Component{
         }.bind(this)
       });
   }
-
-  
-  //componentDidMount
-  //componentWillMount
 
   render() {
     return (

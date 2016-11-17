@@ -9,8 +9,8 @@ class App{
         if($route[0] == ''){
             $this->controll = new Controll('Home');
         }else
-        if($route[0] == "Api"){
-            $this->controll = new RestControll($route);
+        if($route[0] == "_api"){
+            $this->controll = new RestControll($route[1],$route[2],$route[3]);
         }else{            
             $this->controll = new Controll($route[0],$route[1],$route[2]);            
         }
@@ -31,10 +31,27 @@ class RestControll{
         // headers to tell that result is JSON
         header('Content-type: application/json');
 
-        $link1 = array('id' => '1', 'title' => 'Google' , 'url' => 'https://www.google.fi');
-        $link2 = array('id' => '2', 'title' => 'JPPSoft Oy', 'url' => 'https://www.jppsoft.fi');
-        $result_json = array($link1,$link2);
-        echo json_encode($result_json);
+        $class = $controll;
+        $function = $action;
+        $param = $id;
+
+        if (!class_exists($class)) {
+            echo json_encode(array("Error" => "Name -". $controll."- failed to create ".$class, E_USER_NOTICE));   
+            return; 
+        }
+        $controller = new $class();
+        if (!$controller instanceof aApiControll){        
+            echo json_encode(array("Error" => "Page Controll class has to extends aApiControll -> ". $controll, E_USER_ERROR));
+            unset($controller);
+            return;
+        }
+        
+        if (strlen($function) == 0){
+            $controller->index($param);
+        }else{
+            $controller->{$function}($param);
+        }
+        return $controller;
     }
 }
 
