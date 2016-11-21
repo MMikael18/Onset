@@ -91,7 +91,8 @@
 	      description: 'description',
 	      tags: 'tags'
 	    };
-	    //this.handleChange = this.handleChange.bind(this);
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    return _this;
 	  }
 
@@ -142,11 +143,13 @@
 	    }
 	  }, {
 	    key: 'handleChange',
-	    value: function handleChange(event) {}
+	    value: function handleChange(event) {
+	      this.props.setNewUrl(this.refs.urlTextInput.value);
+	    }
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(event) {
-	      alert('A name was submitted: ');
+	      this.props.setNewUrl(this.refs.urlTextInput.value);
 	      event.preventDefault();
 	    }
 	  }, {
@@ -157,15 +160,20 @@
 	        null,
 	        _react2.default.createElement(
 	          'form',
-	          { id: 'AddLinkInput', className: 'form-group', onSubmit: this.handleSubmit },
+	          { id: 'AddLinkInput', className: 'form-group form-inline', onSubmit: this.handleSubmit },
 	          _react2.default.createElement('input', {
 	            className: 'form-control url-input',
 	            type: 'text',
 	            placeholder: 'url',
 	            value: this.props.filterText,
-	            ref: 'filterTextInput',
+	            ref: 'urlTextInput',
 	            onChange: this.handleChange
-	          })
+	          }),
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'submit', className: 'btn btn-primary' },
+	            '+'
+	          )
 	        ),
 	        this.state.url
 	      );
@@ -191,13 +199,48 @@
 	  _createClass(LinkRow, [{
 	    key: 'render',
 	    value: function render() {
+	      var tags = [];
+	      this.props.data.tags.forEach(function (t) {
+	        tags.push(_react2.default.createElement(
+	          'span',
+	          { key: t, className: 'tag tag-success' },
+	          t
+	        ));
+	      });
+
 	      return _react2.default.createElement(
 	        'li',
 	        { className: 'list-group-item' },
 	        _react2.default.createElement(
-	          'a',
-	          { href: this.props.data.url },
-	          this.props.data.title
+	          'span',
+	          null,
+	          _react2.default.createElement(
+	            'a',
+	            { href: this.props.data.url },
+	            this.props.data.title
+	          ),
+	          ' - ',
+	          _react2.default.createElement(
+	            'small',
+	            null,
+	            this.props.data.date
+	          ),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            'small',
+	            null,
+	            this.props.data.url
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          this.props.data.description
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'tags' },
+	          tags
 	        )
 	      );
 	    }
@@ -249,20 +292,21 @@
 	    var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	    _this4.state = { data: [] };
-	    _this4.onUrlInput = _this4.onUrlInput.bind(_this4);
+	    _this4.setNewUrl = _this4.setNewUrl.bind(_this4);
 	    return _this4;
 	  }
 
 	  _createClass(App, [{
-	    key: 'onUrlInput',
-	    value: function onUrlInput(value) {
+	    key: 'setNewUrl',
+	    value: function setNewUrl(value) {
+	      var item = {};
 	      console.log(value);
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      $.ajax({
-	        url: "/_api/links//5",
+	        url: "/_api/links/get/5",
 	        dataType: 'json',
 	        cache: false,
 	        success: function (d) {
@@ -280,7 +324,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(AddLinkInput, { onUrlChange: this.onUrlInput }),
+	        _react2.default.createElement(AddLinkInput, { setNewUrl: this.setNewUrl }),
 	        _react2.default.createElement(List, { data: this.state.data })
 	      );
 	    }

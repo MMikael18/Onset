@@ -22,7 +22,8 @@ class AddLinkInput extends React.Component {
         description: 'description',
         tags: 'tags'
     };
-    //this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
    
 
@@ -70,26 +71,31 @@ class AddLinkInput extends React.Component {
   }
 
   handleChange(event){
-
+    this.props.setNewUrl(
+      this.refs.urlTextInput.value
+    );
   }
   
   handleSubmit(event) {
-    alert('A name was submitted: ');
+    this.props.setNewUrl(
+      this.refs.urlTextInput.value
+    );
     event.preventDefault();
   }
 
   render (){
     return(
       <div>
-        <form id="AddLinkInput" className="form-group" onSubmit={this.handleSubmit}>
+        <form id="AddLinkInput" className="form-group form-inline" onSubmit={this.handleSubmit}>
           <input
               className="form-control url-input" 
               type="text"
               placeholder="url"
               value={this.props.filterText}
-              ref="filterTextInput"
+              ref="urlTextInput"
               onChange={this.handleChange}
             />
+          <button type="submit" className="btn btn-primary">+</button>                     
         </form>
         {this.state.url}
       </div>
@@ -101,8 +107,20 @@ class AddLinkInput extends React.Component {
 
 class LinkRow extends React.Component{ 
   render (){
+    var tags = [];
+    this.props.data.tags.forEach((t) => {
+      tags.push(<span key={t} className="tag tag-success">{t}</span> );
+    });
+
     return(
-      <li className="list-group-item"><a href={this.props.data.url}>{this.props.data.title}</a></li>
+      <li className="list-group-item">
+        <span>
+          <a href={this.props.data.url}>{this.props.data.title}</a> - <small>{this.props.data.date}</small><br/>
+          <small>{this.props.data.url}</small>
+        </span>
+        <span>{this.props.data.description}</span>
+        <span className="tags">{tags}</span>     
+      </li>
     );
   }
 };
@@ -131,16 +149,17 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {data: []};
-    this.onUrlInput = this.onUrlInput.bind(this);
+    this.setNewUrl = this.setNewUrl.bind(this);
   }
 
-  onUrlInput(value){
+  setNewUrl(value){
+    var item = {}
     console.log(value);
   }
 
   componentDidMount() {
       $.ajax({
-        url: "/_api/links//5",
+        url: "/_api/links/get/5",
         dataType: 'json',
         cache: false,
         success: function(d) {
@@ -156,7 +175,7 @@ class App extends React.Component{
   render() {
     return (
       <div>
-        <AddLinkInput onUrlChange={this.onUrlInput} />
+        <AddLinkInput setNewUrl={this.setNewUrl} />
         <List data={this.state.data} />
       </div>
     );

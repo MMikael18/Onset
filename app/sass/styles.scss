@@ -26,14 +26,20 @@ body{
     margin-bottom: 10px;
     input{
         border-width: 0;
-        margin: 15px;   
-        width: calc(100% - 30px);     
-    }
-    .url-input{
-        
-    }
-    .url-input2{
-        
-    }
+        margin: 5px;   
+        width: calc(100% - 60px);     
+    }    
     
 }
+.list-group{
+    li.list-group-item{
+        display: flex;
+        > span{
+            padding-right: 15px;
+        }
+        .tags *{
+            margin-right: 5px;
+        }
+    }
+}
+

@@ -24,5 +24,12 @@ body article {
   margin-bottom: 10px; }
   #AddLinkInput input {
     border-width: 0;
-    margin: 15px;
-    width: calc(100% - 30px); }
+    margin: 5px;
+    width: calc(100% - 60px); }
+
+.list-group li.list-group-item {
+  display: flex; }
+  .list-group li.list-group-item > span {
+    padding-right: 15px; }
+  .list-group li.list-group-item .tags * {
+    margin-right: 5px; }
