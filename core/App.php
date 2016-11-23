@@ -24,7 +24,7 @@ class App{
 
 class RestControll{
     public function __construct($controll,$action = "",$id = ""){
-        
+
         // headers for not caching the results
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -40,8 +40,8 @@ class RestControll{
             return; 
         }
         $controller = new $class();
-        if (!$controller instanceof aApiControll){        
-            echo json_encode(array("Error" => "Page Controll class has to extends aApiControll -> ". $controll, E_USER_ERROR));
+        if (!$controller instanceof aApiBackend){        
+            echo json_encode(array("Error" => "Page Controll class has to extends aApiBackend -> ". $controll, E_USER_ERROR));
             unset($controller);
             return;
         }
@@ -52,6 +52,7 @@ class RestControll{
             $controller->{$function}($param);
         }
         return $controller;
+        
     }
 }
 

@@ -23,9 +23,9 @@ body article {
   border-radius: 5px;
   margin-bottom: 10px; }
   #AddLinkInput input {
-    border-width: 0;
-    margin: 5px;
-    width: calc(100% - 60px); }
+    margin: 5px; }
+  #AddLinkInput button {
+    margin: 5px; }
 
 .list-group li.list-group-item {
   display: flex; }

@@ -1,31 +1,23 @@
-/*
-<div  className="form-control url-input"  
-onInput = {e  => this.handleChange(e)} 
-onBlur  = {e  => this.handleChange(e)}
-onKeyUp={e  => this.handleChange(e)}
-ref="urlinput"
-id="editable"
-dangerouslySetInnerHTML = {{__html: this.state.html}}
-contentEditable="true">
-</div>
-*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../sass/styles.scss';
 
 class AddLinkInput extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-        url: 'url',
-        title: 'title',
-        description: 'description',
-        tags: 'tags'
+        class: 'form-control url-input',
+        url: '',
+        title: '',
+        description: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.class = {
+      succes: 'form-control url-input form-control-succes',
+      warning: 'form-control url-input form-control-warning',
+      danger: 'form-control url-input form-control-danger'
+    }
   }
-   
 
   handleChangeEdit(e) {
 
@@ -70,34 +62,76 @@ class AddLinkInput extends React.Component {
     */
   }
 
-  handleChange(event){
-    this.props.setNewUrl(
-      this.refs.urlTextInput.value
-    );
+
+  handleChangeUrl(event){
+    var value = this.refs.TextInputUrl.value;
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    if(urlRegex.test(value)){
+      this.setState({
+        url: value
+      });
+    }else{
+      this.setState({
+        class: this.class.danger
+      });
+    }
   }
-  
+  handleChangeTitle(event){
+    var value = this.refs.TextInputTitle.value;
+    this.setState({
+        title: value
+      });
+  }
+  handleChangeDescription(event){
+      var value = this.refs.TextInputDescription.value;
+      this.setState({
+        description: value
+      });
+  }
+
   handleSubmit(event) {
+    event.preventDefault();
+    for(var propertyName in this.state) {
+      var v = this.state[propertyName];
+      if(v.length == 0) return;
+    }
+    console.log("ok");
+    /*
     this.props.setNewUrl(
       this.refs.urlTextInput.value
     );
-    event.preventDefault();
+    */
+    
   }
 
   render (){
+
     return(
       <div>
-        <form id="AddLinkInput" className="form-group form-inline" onSubmit={this.handleSubmit}>
-          <input
+        <form id="AddLinkInput" className="form-group form-inline" onSubmit={e => this.handleSubmit(e)}>          
+            <input
+              className={this.state.class}
+              type="text" 
+              placeholder="url"
+              ref="TextInputUrl"
+              onChange={e => this.handleChangeUrl(e)}
+            />          
+            <input
               className="form-control url-input" 
               type="text"
-              placeholder="url"
-              value={this.props.filterText}
-              ref="urlTextInput"
-              onChange={this.handleChange}
+              placeholder="title"
+              ref="TextInputTitle"
+              onChange={e => this.handleChangeTitle(e)}
             />
-          <button type="submit" className="btn btn-primary">+</button>                     
-        </form>
-        {this.state.url}
+            <input
+              className="form-control url-input" 
+              type="text"
+              placeholder="description"
+              ref="TextInputDescription"
+              onChange={e => this.handleChangeDescription(e)}
+            />
+            <button type="submit" className="btn btn-primary">Add</button>
+        </form>        
       </div>
     );
   }
@@ -107,19 +141,20 @@ class AddLinkInput extends React.Component {
 
 class LinkRow extends React.Component{ 
   render (){
+    /*
     var tags = [];
     this.props.data.tags.forEach((t) => {
       tags.push(<span key={t} className="tag tag-success">{t}</span> );
     });
-
+  */
     return(
       <li className="list-group-item">
         <span>
-          <a href={this.props.data.url}>{this.props.data.title}</a> - <small>{this.props.data.date}</small><br/>
+          <small>{this.props.data.date}</small> - <a href={"//"+this.props.data.url} target="_blank">{this.props.data.title}</a><br/>
           <small>{this.props.data.url}</small>
         </span>
         <span>{this.props.data.description}</span>
-        <span className="tags">{tags}</span>     
+        <span className="tags"></span>     
       </li>
     );
   }
@@ -159,11 +194,11 @@ class App extends React.Component{
 
   componentDidMount() {
       $.ajax({
-        url: "/_api/links/get/5",
+        url: "/_api/links/getLinks/5",
         dataType: 'json',
         cache: false,
         success: function(d) {
-          console.dir(d);
+          //console.dir(d);
           this.setState({data: d});
         }.bind(this),
         error: function(xhr, status, err) {

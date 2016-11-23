@@ -1,7 +1,21 @@
 <?php
 
-abstract class aModel
-{   
+abstract class aApiBackend{
+    private $name;
+    private $values = array();
+
+    abstract protected function start();
+    abstract protected function index($params);
+
+    public function __construct() {
+        $this->name = get_class($this);
+        if (class_exists($this->name."Model")) {
+            $model = $this->name."Model";
+            $this->model = new $model();
+        }
+        $this->start();
+    }
+    
     protected $servername = config["MySQL"]["servername"];
     protected $username = config["MySQL"]["username"];
     protected $password = config["MySQL"]["password"];
