@@ -10,34 +10,37 @@ class Links extends aApiBackend{
 
     public function index($p) {}
 
-    public function setLink($p) {
+    public function setLink() {
+        if(isset($_POST['data'])){            
+            
+            $url = $_POST['data']['url'];
+            $title = $_POST['data']['title'];
+            $decs = $_POST['data']['description'];
+            $userid = $_SESSION['USER']['id'];
 
-        $title = "Google";
-        $url = "www.google.fi";
-        $decs = "lorem decs";
+            $q = "INSERT INTO pages (title,url,description) VALUES ('".$title."','".$url."','".$decs."');
+                  SET @page_id = LAST_INSERT_ID();
+                  INSERT INTO user_to_pages (userid,pageid) VALUES(".$userid.", @page_id);";        
 
-        $userid = $_SESSION['USER']['id'];
-        $q =   "INSERT INTO pages (title,url,description) VALUES ('".$title."','".$url."','".$desc."');
-                SET @page_id = LAST_INSERT_ID();
-                INSERT INTO user_to_pages (userid,pageid) VALUES(".$userid.", @page_id);";
-
-        try{
-            $conn = $this->getDataDB("onset");
-            //$hash = password_hash($password, PASSWORD_DEFAULT);
-            $conn->exec($q);
-            //echo json_encode($links);
-        }catch(PDOException $e)
-        {
-            echo json_encode(array("Error" => $e->getMessage()));
+            try{
+                $conn = $this->getDataDB("onset");
+                $conn->exec($q);
+                echo json_encode(array("msg" => 'Successfully added link '.$title));                
+            }catch(PDOException $e)
+            {
+                echo json_encode(array("Error" => $e->getMessage()));
+            }
+    
+        }else{
+            echo json_encode(array("Error" => 'no data'));
         }
+        
     }
 
-    public function getLinks($p) {
-
-        //$userid = $_SESSION['USER']['id'];
-        $q = "SELECT * FROM pages";
+    public function getLinks() {
         try{
             $conn = $this->getDataDB("onset");
+            $q = "SELECT * FROM pages";
             $STH = $conn->query($q);
             # setting the fetch mode
             $STH->setFetchMode(PDO::FETCH_OBJ);

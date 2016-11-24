@@ -18,14 +18,11 @@ body article {
 
 /* List view */
 #AddLinkInput {
-  background-color: #ccc;
   overflow: hidden;
   border-radius: 5px;
   margin-bottom: 10px; }
   #AddLinkInput input {
-    margin: 5px; }
-  #AddLinkInput button {
-    margin: 5px; }
+    margin-right: 5px; }
 
 .list-group li.list-group-item {
   display: flex; }

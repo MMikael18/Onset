@@ -56,6 +56,10 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	var _addLinkInput = __webpack_require__(174);
+
+	var _addLinkInput2 = _interopRequireDefault(_addLinkInput);
+
 	__webpack_require__(172);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -66,178 +70,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var AddLinkInput = function (_React$Component) {
-	  _inherits(AddLinkInput, _React$Component);
-
-	  function AddLinkInput(props) {
-	    _classCallCheck(this, AddLinkInput);
-
-	    var _this = _possibleConstructorReturn(this, (AddLinkInput.__proto__ || Object.getPrototypeOf(AddLinkInput)).call(this, props));
-
-	    _this.state = {
-	      class: 'form-control url-input',
-	      url: '',
-	      title: '',
-	      description: ''
-	    };
-	    _this.class = {
-	      succes: 'form-control url-input form-control-succes',
-	      warning: 'form-control url-input form-control-warning',
-	      danger: 'form-control url-input form-control-danger'
-	    };
-	    return _this;
-	  }
-
-	  _createClass(AddLinkInput, [{
-	    key: 'handleChangeEdit',
-	    value: function handleChangeEdit(e) {
-
-	      var editableDiv = document.getElementById('editable');
-
-	      var caretPos = 0,
-	          line = 0,
-	          sel,
-	          range;
-	      sel = window.getSelection();
-	      range = sel.getRangeAt(0);
-	      if (range.commonAncestorContainer.parentNode == editableDiv) {
-	        caretPos = range.endOffset;
-	        line = range.commonAncestorContainer.parentNode;
-	      }
-
-	      if (e.keyCode === 0 || e.keyCode === 32) {
-	        e.preventDefault();
-	        //console.log('Space pressed')
-
-	        var html = this.refs.urlinput.innerHTML;
-	        var urlRegex = /(^|\s)(https?:\/\/[^\s]+)(^|\s)/g;
-	        if (urlRegex.test(html)) {
-	          this.refs.urlinput.innerHTML = html.replace(urlRegex, function (url) {
-	            return ' <a href="' + url.trim() + '">' + url.trim() + '</a> ';
-	          });
-
-	          if (line) {
-	            range = range.cloneRange();
-	            range.setStartAfter(line, 1);
-	            range.collapse(true);
-	            sel.removeAllRanges();
-	            sel.addRange(range);
-	          }
-	        }
-	      }
-
-	      //this.setState({html: html});
-	      /*
-	      this.props.onUrlChange(
-	        this.refs.filterTextInput.value
-	      );
-	      */
-	    }
-	  }, {
-	    key: 'handleChangeUrl',
-	    value: function handleChangeUrl(event) {
-	      var value = this.refs.TextInputUrl.value;
-	      var urlRegex = /(https?:\/\/[^\s]+)/g;
-	      if (urlRegex.test(value)) {
-	        this.setState({
-	          url: value
-	        });
-	      } else {
-	        this.setState({
-	          class: this.class.danger
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'handleChangeTitle',
-	    value: function handleChangeTitle(event) {
-	      var value = this.refs.TextInputTitle.value;
-	      this.setState({
-	        title: value
-	      });
-	    }
-	  }, {
-	    key: 'handleChangeDescription',
-	    value: function handleChangeDescription(event) {
-	      var value = this.refs.TextInputDescription.value;
-	      this.setState({
-	        description: value
-	      });
-	    }
-	  }, {
-	    key: 'handleSubmit',
-	    value: function handleSubmit(event) {
-	      event.preventDefault();
-	      for (var propertyName in this.state) {
-	        var v = this.state[propertyName];
-	        if (v.length == 0) return;
-	      }
-	      console.log("ok");
-	      /*
-	      this.props.setNewUrl(
-	        this.refs.urlTextInput.value
-	      );
-	      */
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'form',
-	          { id: 'AddLinkInput', className: 'form-group form-inline', onSubmit: function onSubmit(e) {
-	              return _this2.handleSubmit(e);
-	            } },
-	          _react2.default.createElement('input', {
-	            className: this.state.class,
-	            type: 'text',
-	            placeholder: 'url',
-	            ref: 'TextInputUrl',
-	            onChange: function onChange(e) {
-	              return _this2.handleChangeUrl(e);
-	            }
-	          }),
-	          _react2.default.createElement('input', {
-	            className: 'form-control url-input',
-	            type: 'text',
-	            placeholder: 'title',
-	            ref: 'TextInputTitle',
-	            onChange: function onChange(e) {
-	              return _this2.handleChangeTitle(e);
-	            }
-	          }),
-	          _react2.default.createElement('input', {
-	            className: 'form-control url-input',
-	            type: 'text',
-	            placeholder: 'description',
-	            ref: 'TextInputDescription',
-	            onChange: function onChange(e) {
-	              return _this2.handleChangeDescription(e);
-	            }
-	          }),
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'submit', className: 'btn btn-primary' },
-	            'Add'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return AddLinkInput;
-	}(_react2.default.Component);
-
-	;
-
 	/* ----------------------------------------------------------------------- */
 
-	var LinkRow = function (_React$Component2) {
-	  _inherits(LinkRow, _React$Component2);
+	var LinkRow = function (_React$Component) {
+	  _inherits(LinkRow, _React$Component);
 
 	  function LinkRow() {
 	    _classCallCheck(this, LinkRow);
@@ -293,8 +129,8 @@
 
 	;
 
-	var List = function (_React$Component3) {
-	  _inherits(List, _React$Component3);
+	var List = function (_React$Component2) {
+	  _inherits(List, _React$Component2);
 
 	  function List() {
 	    _classCallCheck(this, List);
@@ -325,34 +161,35 @@
 
 	/* ----------------------------------------------------------------------- */
 
-	var App = function (_React$Component4) {
-	  _inherits(App, _React$Component4);
+	var App = function (_React$Component3) {
+	  _inherits(App, _React$Component3);
 
 	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-	    _this5.state = { data: [] };
-	    _this5.setNewUrl = _this5.setNewUrl.bind(_this5);
-	    return _this5;
+	    _this3.state = { data: [] };
+	    _this3.setNewUrl = _this3.setNewUrl.bind(_this3);
+	    return _this3;
 	  }
 
 	  _createClass(App, [{
 	    key: 'setNewUrl',
 	    value: function setNewUrl(value) {
-	      var item = {};
-	      console.log(value);
+	      $.post("/_api/links/setLink/", { data: value }).done(function (data) {
+	        console.dir(data);
+	        console.log("data");
+	      });
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      $.ajax({
 	        url: "/_api/links/getLinks/5",
-	        dataType: 'json',
+	        dataType: "json",
 	        cache: false,
 	        success: function (d) {
-	          //console.dir(d);
 	          this.setState({ data: d });
 	        }.bind(this),
 	        error: function (xhr, status, err) {
@@ -366,7 +203,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(AddLinkInput, { setNewUrl: this.setNewUrl }),
+	        _react2.default.createElement(_addLinkInput2.default, { setNewUrl: this.setNewUrl }),
 	        _react2.default.createElement(List, { data: this.state.data })
 	      );
 	    }
@@ -21752,6 +21589,146 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 173 */,
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddLinkInput = function (_React$Component) {
+	  _inherits(AddLinkInput, _React$Component);
+
+	  function AddLinkInput(props) {
+	    _classCallCheck(this, AddLinkInput);
+
+	    var _this = _possibleConstructorReturn(this, (AddLinkInput.__proto__ || Object.getPrototypeOf(AddLinkInput)).call(this, props));
+
+	    _this.state = {
+	      url: '',
+	      title: '',
+	      description: ''
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AddLinkInput, [{
+	    key: 'handleChangeUrl',
+	    value: function handleChangeUrl(event) {
+	      var value = this.refs.TextInputUrl.value;
+	      var urlRegex = /(https?:\/\/[^\s]+)/g;
+	      if (urlRegex.test(value)) {
+	        this.setState({
+	          url: value
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'handleChangeTitle',
+	    value: function handleChangeTitle(event) {
+	      var value = this.refs.TextInputTitle.value;
+	      this.setState({
+	        title: value
+	      });
+	    }
+	  }, {
+	    key: 'handleChangeDescription',
+	    value: function handleChangeDescription(event) {
+	      var value = this.refs.TextInputDescription.value;
+	      this.setState({
+	        description: value
+	      });
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      event.preventDefault();
+	      for (var propertyName in this.state) {
+	        var v = this.state[propertyName];
+	        if (v.length == 0) return;
+	      }
+	      //console.dir(this.state);
+	      this.props.setNewUrl(this.state);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'form',
+	          { id: 'AddLinkInput', className: 'form-group form-inline', onSubmit: function onSubmit(e) {
+	              return _this2.handleSubmit(e);
+	            } },
+	          _react2.default.createElement('input', {
+	            className: 'form-control url-input',
+	            type: 'text',
+	            placeholder: 'url',
+	            ref: 'TextInputUrl',
+	            onChange: function onChange(e) {
+	              return _this2.handleChangeUrl(e);
+	            }
+	          }),
+	          _react2.default.createElement('input', {
+	            className: 'form-control url-input',
+	            type: 'text',
+	            placeholder: 'title',
+	            ref: 'TextInputTitle',
+	            onChange: function onChange(e) {
+	              return _this2.handleChangeTitle(e);
+	            }
+	          }),
+	          _react2.default.createElement('input', {
+	            className: 'form-control url-input',
+	            type: 'text',
+	            placeholder: 'description',
+	            ref: 'TextInputDescription',
+	            onChange: function onChange(e) {
+	              return _this2.handleChangeDescription(e);
+	            }
+	          }),
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'submit', className: 'btn btn-primary' },
+	            'Add'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AddLinkInput;
+	}(_react2.default.Component);
+
+	;
+
+	exports.default = AddLinkInput;
 
 /***/ }
 /******/ ]);
